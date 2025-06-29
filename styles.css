@@ -7,7 +7,8 @@ body {
   line-height: 1.6;
   width: 100%;
   height: 100%;
-  /* Убрано overflow: hidden для поддержки прокрутки */
+  overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+  -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
 }
 header {
   padding: 20px;
@@ -63,7 +64,7 @@ nav ul li a:hover {
   width: 100%;
   height: 200px;
   overflow: hidden;
-  touch-action: pan-y; /* Разрешаем вертикальную прокрутку, блокируем горизонтальную */
+  touch-action: pan-x; /* Разрешаем горизонтальный свайп для карусели, вертикальный — для страницы */
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -174,7 +175,7 @@ button:hover {
   margin: 20px auto;
   padding: 20px;
   text-align: center;
-  min-height: 100vh; /* Убедимся, что страница занимает достаточно места */
+  min-height: 100vh;
 }
 .cart-page h2 {
   font-size: 1.5em;
