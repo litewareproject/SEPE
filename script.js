@@ -85,7 +85,7 @@ document.querySelectorAll('nav a').forEach(anchor => {
   });
 });
 
-// Carousel functionality with touch and mouse drag
+// Carousel functionality with touch, mouse drag, and wheel
 document.querySelectorAll('.carousel').forEach((carousel, index) => {
   const images = carousel.querySelectorAll('img');
   let currentIndex = 0;
@@ -118,6 +118,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
     carousel.addEventListener('touchstart', (e) => {
       isDragging = true;
       startX = e.touches[0].clientX;
+      e.preventDefault(); // Предотвращаем стандартное поведение
     });
 
     carousel.addEventListener('touchmove', (e) => {
@@ -131,6 +132,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
         prevSlide();
         isDragging = false;
       }
+      e.preventDefault();
     });
 
     carousel.addEventListener('touchend', () => {
@@ -141,6 +143,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
     carousel.addEventListener('mousedown', (e) => {
       isDragging = true;
       startX = e.clientX;
+      e.preventDefault();
     });
 
     carousel.addEventListener('mousemove', (e) => {
@@ -159,8 +162,19 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
     carousel.addEventListener('mouseup', () => {
       isDragging = false;
     });
+
     carousel.addEventListener('mouseleave', () => {
       isDragging = false;
+    });
+
+    // Wheel event for mouse scroll
+    carousel.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (e.deltaY > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
     });
 
     function goToSlide(index) {
