@@ -85,11 +85,14 @@ document.querySelectorAll('nav a').forEach(anchor => {
   });
 });
 
-// Carousel functionality with smooth animation
+// Carousel functionality with touch and mouse drag
 document.querySelectorAll('.carousel').forEach((carousel, index) => {
   const images = carousel.querySelectorAll('img');
   let currentIndex = 0;
   const dots = [];
+  let isDragging = false;
+  let startX = 0;
+  let currentX = 0;
 
   if (images.length > 0) {
     images[currentIndex].classList.add('active');
@@ -111,6 +114,55 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
       interval = setInterval(nextSlide, 3000);
     });
 
+    // Touch events for mobile
+    carousel.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+    });
+
+    carousel.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      currentX = e.touches[0].clientX;
+      const diff = startX - currentX;
+      if (diff > 50) {
+        nextSlide();
+        isDragging = false;
+      } else if (diff < -50) {
+        prevSlide();
+        isDragging = false;
+      }
+    });
+
+    carousel.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Mouse drag for desktop
+    carousel.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+    });
+
+    carousel.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      currentX = e.clientX;
+      const diff = startX - currentX;
+      if (diff > 50) {
+        nextSlide();
+        isDragging = false;
+      } else if (diff < -50) {
+        prevSlide();
+        isDragging = false;
+      }
+    });
+
+    carousel.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+    carousel.addEventListener('mouseleave', () => {
+      isDragging = false;
+    });
+
     function goToSlide(index) {
       if (currentIndex !== index) {
         images[currentIndex].classList.remove('active');
@@ -129,16 +181,24 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
       images[currentIndex].classList.add('active');
       dots[currentIndex].classList.add('active');
     }
+
+    function prevSlide() {
+      const prevIndex = (currentIndex - 1 + images.length) % images.length;
+      images[currentIndex].classList.remove('active');
+      dots[currentIndex].classList.remove('active');
+      currentIndex = prevIndex;
+      images[currentIndex].classList.add('active');
+      dots[currentIndex].classList.add('active');
+    }
   }
 });
 
 // Telegram Mini App initialization
 if (window.Telegram?.WebApp) {
   window.Telegram.WebApp.ready();
-  window.Telegram.WebApp.expand(); // Расширяем на полный экран
+  window.Telegram.WebApp.expand();
   document.body.style.backgroundColor = window.Telegram.WebApp.themeParams.bg_color || '#fff';
   document.body.style.color = window.Telegram.WebApp.themeParams.text_color || '#000';
-  // Обновляем цвета кнопок и других элементов при смене темы
   const updateTheme = () => {
     document.querySelectorAll('button').forEach(btn => {
       btn.style.backgroundColor = window.Telegram.WebApp.themeParams.button_color || '#000';
