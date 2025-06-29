@@ -113,7 +113,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
       interval = setInterval(nextSlide, 3000);
     });
 
-    // Touch events for mobile
+    // Touch events for carousel
     carousel.addEventListener('touchstart', (e) => {
       startX = e.touches[0].clientX;
       isDragging = true;
@@ -130,14 +130,14 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
         prevSlide();
         isDragging = false;
       }
-      e.preventDefault(); // Блокируем стандартную прокрутку
+      e.preventDefault();
     }, { passive: false });
 
     carousel.addEventListener('touchend', () => {
       isDragging = false;
     });
 
-    // Wheel event for mouse scroll
+    // Wheel event for carousel
     carousel.addEventListener('wheel', (e) => {
       e.preventDefault();
       if (e.deltaY > 0) {
@@ -146,36 +146,77 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
         prevSlide();
       }
     }, { passive: false });
+  }
 
-    function goToSlide(index) {
-      if (currentIndex !== index) {
-        images[currentIndex].classList.remove('active');
-        dots[currentIndex].classList.remove('active');
-        currentIndex = index;
-        images[currentIndex].classList.add('active');
-        dots[currentIndex].classList.add('active');
-      }
-    }
-
-    function nextSlide() {
-      const nextIndex = (currentIndex + 1) % images.length;
+  function goToSlide(index) {
+    if (currentIndex !== index) {
       images[currentIndex].classList.remove('active');
       dots[currentIndex].classList.remove('active');
-      currentIndex = nextIndex;
-      images[currentIndex].classList.add('active');
-      dots[currentIndex].classList.add('active');
-    }
-
-    function prevSlide() {
-      const prevIndex = (currentIndex - 1 + images.length) % images.length;
-      images[currentIndex].classList.remove('active');
-      dots[currentIndex].classList.remove('active');
-      currentIndex = prevIndex;
+      currentIndex = index;
       images[currentIndex].classList.add('active');
       dots[currentIndex].classList.add('active');
     }
   }
+
+  function nextSlide() {
+    const nextIndex = (currentIndex + 1) % images.length;
+    images[currentIndex].classList.remove('active');
+    dots[currentIndex].classList.remove('active');
+    currentIndex = nextIndex;
+    images[currentIndex].classList.add('active');
+    dots[currentIndex].classList.add('active');
+  }
+
+  function prevSlide() {
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
+    images[currentIndex].classList.remove('active');
+    dots[currentIndex].classList.remove('active');
+    currentIndex = prevIndex;
+    images[currentIndex].classList.add('active');
+    dots[currentIndex].classList.add('active');
+  }
 });
+
+// Page swipe and scroll navigation
+let startY = 0;
+document.body.addEventListener('touchstart', (e) => {
+  startY = e.touches[0].clientY;
+}, { passive: false });
+
+document.body.addEventListener('touchmove', (e) => {
+  const currentY = e.touches[0].clientY;
+  const diff = startY - currentY;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0 && window.location.pathname.includes('index.html')) {
+      window.location.href = 'cart.html';
+    } else if (diff < 0 && window.location.pathname.includes('cart.html')) {
+      window.location.href = 'index.html';
+    }
+    e.preventDefault();
+  }
+}, { passive: false });
+
+document.body.addEventListener('touchend', () => {
+  startY = 0;
+});
+
+document.body.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const sections = document.querySelectorAll('section');
+  if (sections.length > 0) {
+    const scrollDirection = e.deltaY > 0 ? 1 : -1;
+    const currentSection = Array.from(sections).findIndex(section => {
+      return section.getBoundingClientRect().top >= 0;
+    });
+    let nextSectionIndex = currentSection + scrollDirection;
+    if (nextSectionIndex >= sections.length) {
+      nextSectionIndex = sections.length - 1;
+    } else if (nextSectionIndex < 0) {
+      nextSectionIndex = 0;
+    }
+    sections[nextSectionIndex].scrollIntoView({ behavior: 'smooth' });
+  }
+}, { passive: false });
 
 // Telegram Mini App initialization
 if (window.Telegram?.WebApp) {
