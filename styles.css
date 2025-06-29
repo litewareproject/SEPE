@@ -1,0 +1,297 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #000;
+  line-height: 1.6;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Убираем лишние прокрутки */
+}
+header {
+  padding: 20px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+h1 {
+  margin: 0;
+  font-size: 2.5em;
+  font-weight: 700;
+}
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+nav ul li {
+  display: inline;
+  margin: 0 15px;
+}
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 400;
+}
+nav ul li a:hover {
+  color: #ccc;
+}
+#cart-icon {
+  font-size: 1.5em;
+}
+.products {
+  padding: 40px 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.product {
+  background: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+}
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 200px; /* Уменьшаем высоту для мобильных */
+  overflow: hidden;
+}
+.carousel img {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.carousel img.active {
+  display: block;
+  opacity: 1;
+}
+.carousel-dots {
+  margin-top: 10px;
+  text-align: center;
+}
+.carousel-dots span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #bbb;
+  border-radius: 50%;
+  margin: 0 4px;
+  cursor: pointer;
+}
+.carousel-dots span.active {
+  background: #000;
+}
+.product h2 {
+  margin: 15px 0 10px;
+  font-size: 1.2em; /* Уменьшаем для мобильных */
+  font-weight: 700;
+}
+.product p {
+  font-size: 0.8em; /* Уменьшаем для мобильных */
+  color: #666;
+  margin-bottom: 15px;
+}
+.price {
+  font-size: 1em; /* Уменьшаем для мобильных */
+  color: #000;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+button {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 8px 16px; /* Уменьшаем для мобильных */
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  width: 100%;
+  max-width: 180px;
+}
+button:hover {
+  background: #333;
+}
+.contact {
+  padding: 20px; /* Уменьшаем для мобильных */
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+.contact h2 {
+  margin-bottom: 15px;
+  font-size: 1.5em; /* Уменьшаем для мобильных */
+  font-weight: 700;
+}
+.contact form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px; /* Уменьшаем для мобильных */
+  margin: 0 auto;
+}
+.contact form input, .contact form textarea {
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+}
+.contact form textarea {
+  height: 80px; /* Уменьшаем для мобильных */
+}
+.cart-notification {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  display: none;
+  z-index: 1000;
+}
+.cart-page {
+  max-width: 1200px;
+  margin: 20px auto; /* Уменьшаем для мобильных */
+  padding: 20px;
+  text-align: center;
+}
+.cart-page h2 {
+  font-size: 1.5em; /* Уменьшаем для мобильных */
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.cart-page .cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  max-width: 100%; /* Адаптация под мобильные */
+}
+.cart-page .cart-item img {
+  width: 40px; /* Уменьшаем для мобильных */
+  height: 40px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+.cart-page .cart-item .item-details {
+  flex-grow: 1;
+  font-size: 0.9em; /* Уменьшаем для мобильных */
+}
+.cart-page .cart-item .remove-item {
+  color: #000;
+  cursor: pointer;
+  font-size: 1em; /* Уменьшаем для мобильных */
+  margin-left: 10px;
+}
+.cart-page .cart-item .remove-item:hover {
+  color: #cc0000;
+}
+.cart-page .total-row {
+  font-size: 1em; /* Уменьшаем для мобильных */
+  font-weight: 700;
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cart-page .total-row span {
+  margin-left: 10px;
+}
+.cart-page .buy-button {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 8px 16px; /* Уменьшаем для мобильных */
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  width: auto;
+  max-width: 180px;
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 10px;
+}
+.cart-page .button-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.cart-page button, .cart-page .back-button {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  width: 160px; /* Уменьшаем для мобильных */
+  height: 36px; /* Уменьшаем для мобильных */
+  margin: 0 5px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.cart-page button:hover, .cart-page .back-button:hover, .cart-page .buy-button:hover {
+  background: #333;
+}
+.support {
+  margin-top: 15px;
+  text-align: center;
+}
+.support a {
+  color: #0088cc;
+  margin: 0 10px;
+  font-size: 1em; /* Уменьшаем для мобильных */
+}
+.support a:hover {
+  color: #005f99;
+}
+footer {
+  padding: 15px; /* Уменьшаем для мобильных */
+  background: #000;
+  color: #fff;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Адаптация под Telegram Mini App темы */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1c1c1c;
+    color: #fff;
+  }
+  .product, .cart-item {
+    background: #2c2c2c;
+    border-color: #444;
+  }
+  button {
+    background: #fff;
+    color: #000;
+  }
+  button:hover {
+    background: #ccc;
+  }
+  .cart-notification {
+    background: #333;
+  }
+}
