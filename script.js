@@ -177,21 +177,23 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
   }
 });
 
-// Page navigation with touch swipe and wheel
+// Page navigation with touch swipe
 let startY = 0;
 document.addEventListener('touchstart', (e) => {
   startY = e.touches[0].clientY;
 }, { passive: false });
 
 document.addEventListener('touchmove', (e) => {
+  if (!startY) return;
   const currentY = e.touches[0].clientY;
   const diff = startY - currentY;
-  if (Math.abs(diff) > 50) {
+  if (Math.abs(diff) > 100) { // Увеличен порог до 100 для точности
     if (diff > 0 && window.location.pathname.includes('index.html')) {
       window.location.href = 'cart.html';
     } else if (diff < 0 && window.location.pathname.includes('cart.html')) {
       window.location.href = 'index.html';
     }
+    startY = 0; // Сбрасываем после переключения
     e.preventDefault();
   }
 }, { passive: false });
@@ -200,21 +202,20 @@ document.addEventListener('touchend', () => {
   startY = 0;
 });
 
+// Wheel navigation for sections on index.html
 document.addEventListener('wheel', (e) => {
-  e.preventDefault();
   if (window.location.pathname.includes('index.html')) {
+    e.preventDefault();
     const sections = document.querySelectorAll('section');
     if (sections.length > 0) {
       const scrollDirection = e.deltaY > 0 ? 1 : -1;
       const currentSection = Array.from(sections).findIndex(section => {
-        return section.getBoundingClientRect().top >= 0;
+        const rect = section.getBoundingClientRect();
+        return rect.top >= 0 && rect.top < window.innerHeight;
       });
       let nextSectionIndex = currentSection + scrollDirection;
-      if (nextSectionIndex >= sections.length) {
-        nextSectionIndex = sections.length - 1;
-      } else if (nextSectionIndex < 0) {
-        nextSectionIndex = 0;
-      }
+      if (nextSectionIndex >= sections.length) nextSectionIndex = sections.length - 1;
+      if (nextSectionIndex < 0) nextSectionIndex = 0;
       sections[nextSectionIndex].scrollIntoView({ behavior: 'smooth' });
     }
   }
