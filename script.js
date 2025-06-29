@@ -85,14 +85,13 @@ document.querySelectorAll('nav a').forEach(anchor => {
   });
 });
 
-// Carousel functionality with touch, mouse drag, and wheel
+// Carousel functionality with touch and wheel
 document.querySelectorAll('.carousel').forEach((carousel, index) => {
   const images = carousel.querySelectorAll('img');
   let currentIndex = 0;
   const dots = [];
-  let isDragging = false;
   let startX = 0;
-  let currentX = 0;
+  let isDragging = false;
 
   if (images.length > 0) {
     images[currentIndex].classList.add('active');
@@ -116,14 +115,13 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
 
     // Touch events for mobile
     carousel.addEventListener('touchstart', (e) => {
-      isDragging = true;
       startX = e.touches[0].clientX;
-      e.preventDefault();
-    });
+      isDragging = true;
+    }, { passive: false });
 
     carousel.addEventListener('touchmove', (e) => {
       if (!isDragging) return;
-      currentX = e.touches[0].clientX;
+      const currentX = e.touches[0].clientX;
       const diff = startX - currentX;
       if (diff > 50) {
         nextSlide();
@@ -132,38 +130,10 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
         prevSlide();
         isDragging = false;
       }
-      e.preventDefault();
-    });
+      e.preventDefault(); // Блокируем стандартную прокрутку
+    }, { passive: false });
 
     carousel.addEventListener('touchend', () => {
-      isDragging = false;
-    });
-
-    // Mouse drag for desktop
-    carousel.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      startX = e.clientX;
-      e.preventDefault();
-    });
-
-    carousel.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      currentX = e.clientX;
-      const diff = startX - currentX;
-      if (diff > 50) {
-        nextSlide();
-        isDragging = false;
-      } else if (diff < -50) {
-        prevSlide();
-        isDragging = false;
-      }
-    });
-
-    carousel.addEventListener('mouseup', () => {
-      isDragging = false;
-    });
-
-    carousel.addEventListener('mouseleave', () => {
       isDragging = false;
     });
 
@@ -175,7 +145,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
       } else {
         prevSlide();
       }
-    });
+    }, { passive: false });
 
     function goToSlide(index) {
       if (currentIndex !== index) {
