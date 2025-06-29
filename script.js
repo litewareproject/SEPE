@@ -23,7 +23,7 @@ function updateCartDisplay() {
       const isWhite = item.includes('Белая');
       return `
         <div class="cart-item">
-          <img src="/fotors/Sepe Concept ${isWhite ? 4 : 1}.webp" alt="${item}">
+          <img src="Sepe Concept ${isWhite ? 4 : 1}.webp" alt="${item}">
           <div class="item-details">${item}</div>
           <i class="fas fa-trash remove-item" data-index="${index}"></i>
         </div>
@@ -118,7 +118,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
     carousel.addEventListener('touchstart', (e) => {
       isDragging = true;
       startX = e.touches[0].clientX;
-      e.preventDefault(); // Предотвращаем стандартное поведение
+      e.preventDefault();
     });
 
     carousel.addEventListener('touchmove', (e) => {
