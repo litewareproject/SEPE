@@ -177,13 +177,13 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
   }
 });
 
-// Page swipe and scroll navigation
+// Page navigation with touch swipe and wheel
 let startY = 0;
-document.body.addEventListener('touchstart', (e) => {
+document.addEventListener('touchstart', (e) => {
   startY = e.touches[0].clientY;
 }, { passive: false });
 
-document.body.addEventListener('touchmove', (e) => {
+document.addEventListener('touchmove', (e) => {
   const currentY = e.touches[0].clientY;
   const diff = startY - currentY;
   if (Math.abs(diff) > 50) {
@@ -196,25 +196,27 @@ document.body.addEventListener('touchmove', (e) => {
   }
 }, { passive: false });
 
-document.body.addEventListener('touchend', () => {
+document.addEventListener('touchend', () => {
   startY = 0;
 });
 
-document.body.addEventListener('wheel', (e) => {
+document.addEventListener('wheel', (e) => {
   e.preventDefault();
-  const sections = document.querySelectorAll('section');
-  if (sections.length > 0) {
-    const scrollDirection = e.deltaY > 0 ? 1 : -1;
-    const currentSection = Array.from(sections).findIndex(section => {
-      return section.getBoundingClientRect().top >= 0;
-    });
-    let nextSectionIndex = currentSection + scrollDirection;
-    if (nextSectionIndex >= sections.length) {
-      nextSectionIndex = sections.length - 1;
-    } else if (nextSectionIndex < 0) {
-      nextSectionIndex = 0;
+  if (window.location.pathname.includes('index.html')) {
+    const sections = document.querySelectorAll('section');
+    if (sections.length > 0) {
+      const scrollDirection = e.deltaY > 0 ? 1 : -1;
+      const currentSection = Array.from(sections).findIndex(section => {
+        return section.getBoundingClientRect().top >= 0;
+      });
+      let nextSectionIndex = currentSection + scrollDirection;
+      if (nextSectionIndex >= sections.length) {
+        nextSectionIndex = sections.length - 1;
+      } else if (nextSectionIndex < 0) {
+        nextSectionIndex = 0;
+      }
+      sections[nextSectionIndex].scrollIntoView({ behavior: 'smooth' });
     }
-    sections[nextSectionIndex].scrollIntoView({ behavior: 'smooth' });
   }
 }, { passive: false });
 
